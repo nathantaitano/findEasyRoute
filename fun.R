@@ -16,29 +16,29 @@ getAdjs <- function(row, xLen, yLen){
             sw = NA, s = NA, se = NA)
   if(row > xLen){
     adjs$n <- row - xLen
-  }
+  }else{message("Coordinate is on edge of raster")}
   if(row > xLen & row %% xLen != 1){
       adjs$nw <- adjs$n - 1
-  }
+  }else{message("Coordinate is on edge of raster")}
   if(row > xLen & row %% xLen != 0){
       adjs$ne <- adjs$n + 1
-  }
+  }else{message("Coordinate is on edge of raster")}
   if(row %% xLen != 1){
     adjs$w <- row - 1
-  }
+  }else{message("Coordinate is on edge of raster")}
   if(row %% xLen != 1 & row < (xLen*(yLen-1))){
     adjs$sw <- row - 1 + xLen
-  }
+  }else{message("Coordinate is on edge of raster")}
   if(row %% xLen != 0){
     adjs$e <- row + 1
-  }
+  }else{message("Coordinate is on edge of raster")}
   if(row %% xLen != 0 & row < (xLen*(yLen-1))){
     adjs$se <- row + 1 + xLen
-  }
+  }else{message("Coordinate is on edge of raster")}
   if(row < (xLen*(yLen-1))){
     adjs$s <- row + xLen
-  }
-  return(adjs)
+  }else{message("Coordinate is on edge of raster")}
+  return(unlist(adjs))
 }
 
 calcKcals <- function(startElev, endElev, dist, weight = 67){
@@ -58,14 +58,17 @@ calcKcals <- function(startElev, endElev, dist, weight = 67){
   return(kcals)
 }
 
-getDiagDist <- function(startElev, endElev, res=30){
+getDiagCals <- function(startElev, endElev, res=30){
   flatDist <- (2 * res^2)^(1/2)
   diagDist <- (flatDist^2 + (endElev - startElev)^2)^(1/2)
-  return(diagDist)
+  diagCals <- calcKcals(startElev = startElev, endElev = endElev, dist = diagDist)
+  return(diagCals)
 }
 
-getHorDist <- function(startElev, endElev, res=30){
+getHorCals <- function(startElev, endElev, res=30){
   horDist <- (res^2 + (endElev-startElev)^2)^(1/2)
+  horCals <- calcKcals(startElev = startElev, endElev = endElev, dist = horDist)
+  return(horCals)
 }
 
 findNode <- function(xyzTab, lat, long, xLen){
@@ -81,11 +84,25 @@ findNode <- function(xyzTab, lat, long, xLen){
   node <- xJump + xLen * yJump
 }
 
-dijkstra <- function(xyzFile, oriLat, oriLong, destLat, destLong, fileXLen, res=30){
+dijkstra <- function(xyzFile, oriLat, oriLong, destLat, destLong, fileXLen, fileYLen, res=30){
   xyzDf <- read.table(xyzFile)
   oriNode <- findNode(xyzDf, oriLat, oriLong, fileXLen)
   destNode <- findNode(xyzDf, destLat, destLong, fileXLen)
   
-  visited <- c()
-  unvisited <- c()
+  unvisited <- 1:nrow(xyzDf)
+  dists <- rep(Inf, 1:nrow(xyzDf))
+  visited <- c(oriNode)
+  dists[oriNode] <- 0
+  curNode <- oriNode
+  adjNodes <- getAdjs
+  adjNodes <- adjNodes[!is.na(adjNodes)]
+  diagAdjs <- adjNodes[names(adjNodes) %in% c("nw","ne","sw","se")]
+  horAdjs <- adjNodes[names(adjNodes) %in% c("n","s","e","w")]
+  tentDists <- c()
+  tentDists <- c(tentDists, sapply(horAdjs, ))
+  while(!destNode %in% visited){
+    if()
+    unvisited <- unvisited[which(unvisited %in% visited)]
+  }
+  
 }
