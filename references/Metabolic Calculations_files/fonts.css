@@ -1,0 +1,160 @@
+/*
+// --------------------------------------------------------------------------
+// Fonts
+// --------------------------------------------------------------------------
+*/
+
+/* Normal */
+@font-face {
+    font-family: 'FG Condensed';
+    src: url('/fonts/franklingothic_condensed/FranklinGothic-Cd-webfont.eot');
+    src: url('/fonts/franklingothic_condensed/FranklinGothic-Cd-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/fonts/franklingothic_condensed/FranklinGothic-Cd-webfont.woff') format('woff'),
+         url('/fonts/franklingothic_condensed/FranklinGothic-Cd-webfont.ttf') format('truetype'),
+         url('/fonts/franklingothic_condensed/FranklinGothic-Cd-webfont.svg#franklin_gothic_fs_cd') format('svg');
+    font-weight: 400;
+    font-style: normal;
+}
+
+/* Normal Italic */
+@font-face {
+    font-family: 'FG Condensed';
+    src: url('/fonts/franklingothic_condensed_italic/FranklinGothic-CdIt-webfont.eot');
+    src: url('/fonts/franklingothic_condensed_italic/FranklinGothic-CdIt-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/fonts/franklingothic_condensed_italic/FranklinGothic-CdIt-webfont.woff') format('woff'),
+         url('/fonts/franklingothic_condensed_italic/FranklinGothic-CdIt-webfont.ttf') format('truetype'),
+         url('/fonts/franklingothic_condensed_italic/FranklinGothic-CdIt-webfont.svg#franklin_gothic_fs_cditalic') format('svg');
+    font-weight: 400;
+    font-style: italic;
+}
+
+/* Medium */
+@font-face {
+    font-family: 'FG Condensed';
+    src: url('/fonts/franklingothic_medium_condensed/FranklinGothic-MedCd-webfont.eot');
+    src: url('/fonts/franklingothic_medium_condensed/FranklinGothic-MedCd-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/fonts/franklingothic_medium_condensed/FranklinGothic-MedCd-webfont.woff') format('woff'),
+         url('/fonts/franklingothic_medium_condensed/FranklinGothic-MedCd-webfont.ttf') format('truetype'),
+         url('/fonts/franklingothic_medium_condensed/FranklinGothic-MedCd-webfont.svg#franklin_gothic_fs_medcdRg') format('svg');
+    font-weight: 500;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'FG Condensed';
+    src: url('/fonts/franklingothic_medium_condensed_italic/FranklinGothic-MedCdIt-webfont.eot');
+    src: url('/fonts/franklingothic_medium_condensed_italic/FranklinGothic-MedCdIt-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/fonts/franklingothic_medium_condensed_italic/FranklinGothic-MedCdIt-webfont.woff') format('woff'),
+         url('/fonts/franklingothic_medium_condensed_italic/FranklinGothic-MedCdIt-webfont.ttf') format('truetype'),
+         url('/fonts/franklingothic_medium_condensed_italic/FranklinGothic-MedCdIt-webfont.svg#franklin_gothic_fs_medcdIt') format('svg');
+    font-weight: 500;
+    font-style: italic;
+}
+
+/* Demibold / Semibold */
+@font-face {
+    font-family: 'FG Condensed';
+    src: url('/fonts/franklingothic_demi_condensed/FranklinGothic-DemiCd-webfont.eot');
+    src: url('/fonts/franklingothic_demi_condensed/FranklinGothic-DemiCd-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/fonts/franklingothic_demi_condensed/FranklinGothic-DemiCd-webfont.woff') format('woff'),
+         url('/fonts/franklingothic_demi_condensed/FranklinGothic-DemiCd-webfont.ttf') format('truetype'),
+         url('/fonts/franklingothic_demi_condensed/FranklinGothic-DemiCd-webfont.svg#franklin_gothic_fs_cdbold') format('svg');
+    font-weight: 600;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'FG Condensed';
+    src: url('/fonts/franklingothic_demi_condensed_italic/FranklinGothic-DemiCdIt-webfont.eot');
+    src: url('/fonts/franklingothic_demi_condensed_italic/FranklinGothic-DemiCdIt-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/fonts/franklingothic_demi_condensed_italic/FranklinGothic-DemiCdIt-webfont.woff') format('woff'),
+         url('/fonts/franklingothic_demi_condensed_italic/FranklinGothic-DemiCdIt-webfont.ttf') format('truetype'),
+         url('/fonts/franklingothic_demi_condensed_italic/FranklinGothic-DemiCdIt-webfont.svg#franklin_gothic_fs_cdBdIt') format('svg');
+    font-weight: 600;
+    font-style: italic;
+}
+
+
+/*
+// --------------------------------------------------------------------------
+// Fonts
+// --------------------------------------------------------------------------
+*/
+
+/* Light */
+@font-face {
+    font-family: 'Clearsans';
+    src: url('/fonts/clearsans_light/ClearSans-Light.eot');
+    src: url('/fonts/clearsans_light/ClearSans-Light.eot?#iefix') format('embedded-opentype'),
+         url('/fonts/clearsans_light/ClearSans-Light.woff') format('woff'),
+         url('/fonts/clearsans_light/ClearSans-Light.ttf') format('truetype'),
+         url('/fonts/clearsans_light/ClearSans-Light.svg#clearsans_light') format('svg');
+    font-weight: 200;
+    font-style: normal;
+}
+
+/* Normal */
+@font-face {
+    font-family: 'Clearsans';
+    src: url('/fonts/clearsans_regular/ClearSans-Regular.eot');
+    src: url('/fonts/clearsans_regular/ClearSans-Regular.eot?#iefix') format('embedded-opentype'),
+         url('/fonts/clearsans_regular/ClearSans-Regular.woff') format('woff'),
+         url('/fonts/clearsans_regular/ClearSans-Regular.ttf') format('truetype'),
+         url('/fonts/clearsans_regular/ClearSans-Regular.svg#clearsans_regular') format('svg');
+    font-weight: 400;
+    font-style: normal;
+}
+
+/* Normal Italic */
+@font-face {
+    font-family: 'Clearsans';
+    src: url('/fonts/clearsans_italic/ClearSans-Italic.eot');
+    src: url('/fonts/clearsans_italic/ClearSans-Italic.eot?#iefix') format('embedded-opentype'),
+         url('/fonts/clearsans_italic/ClearSans-Italic.woff') format('woff'),
+         url('/fonts/clearsans_italic/ClearSans-Italic.ttf') format('truetype'),
+         url('/fonts/clearsans_italic/ClearSans-Italic.svg#clearsans_italic') format('svg');
+    font-weight: 400;
+    font-style: italic;
+}
+
+/* Medium */
+@font-face {
+    font-family: 'Clearsans';
+    src: url('/fonts/clearsans_medium/ClearSans-Medium.eot');
+    src: url('/fonts/clearsans_medium/ClearSans-Medium.eot?#iefix') format('embedded-opentype'),
+         url('/fonts/clearsans_medium/ClearSans-Medium.woff') format('woff'),
+         url('/fonts/clearsans_medium/ClearSans-Medium.ttf') format('truetype'),
+         url('/fonts/clearsans_medium/ClearSans-Medium.svg#clearsans_medium') format('svg');
+    font-weight: 500;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Clearsans';
+    src: url('/fonts/clearsans_medium_italic/ClearSans-MediumItalic.eot');
+    src: url('/fonts/clearsans_medium_italic/ClearSans-MediumItalic.eot?#iefix') format('embedded-opentype'),
+         url('/fonts/clearsans_medium_italic/ClearSans-MediumItalic.woff') format('woff'),
+         url('/fonts/clearsans_medium_italic/ClearSans-MediumItalic.ttf') format('truetype'),
+         url('/fonts/clearsans_medium_italic/ClearSans-MediumItalic.svg#clearsans_medium_italic') format('svg');
+    font-weight: 500;
+    font-style: italic;
+}
+
+/* Demibold / Semibold */
+@font-face {
+    font-family: 'Clearsans';
+    src: url('/fonts/clearsans_bold/ClearSans-Bold.eot');
+    src: url('/fonts/clearsans_bold/ClearSans-Bold.eot?#iefix') format('embedded-opentype'),
+         url('/fonts/clearsans_bold/ClearSans-Bold.woff') format('woff'),
+         url('/fonts/clearsans_bold/ClearSans-Bold.ttf') format('truetype'),
+         url('/fonts/clearsans_bold/ClearSans-Bold.svg#clearsans_bold') format('svg');
+    font-weight: 600;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Clearsans';
+    src: url('/fonts/clearsans_bold_italic/ClearSans-BoldItalic.eot');
+    src: url('/fonts/clearsans_bold_italic/ClearSans-BoldItalic.eot?#iefix') format('embedded-opentype'),
+         url('/fonts/clearsans_bold_italic/ClearSans-BoldItalic.woff') format('woff'),
+         url('/fonts/clearsans_bold_italic/ClearSans-BoldItalic.ttf') format('truetype'),
+         url('/fonts/clearsans_bold_italic/ClearSans-BoldItalic.svg#clearsans_bold_italic') format('svg');
+    font-weight: 600;
+    font-style: italic;
+}
