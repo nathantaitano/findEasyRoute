@@ -2,15 +2,21 @@
 # This is in line with the lat/long order given by the xyz data format.
 
 # Just a modulo statement for extracting a subset square from an xyz gis dataframe, 
-# which itself was read directly in with read.table()
-# This gave me a 100x100 square at ~30m resolution in xyz format (test2Xyz)
+# which itself was read in with read.table()
+# The original xyz dataframe was a 3612x3612 raster w/ 30m resolution
+# This was reduced to a 3612x300 xyz raster with following in terminal:
+# head -n 1083600 hdr.xyz > test2.xyz
+# The code below gave me a 300x300 cell raster at ~30m resolution in xyz format
 # To use in testing the functions while I was building them
-# for(r in 2:nrow(testXyz)){
-#   if(r %% 3612 < 101 & r %% 3612 > 0){
-#     test2Xyz <- rbind(test2Xyz, testXyz[r,])
-#   }
-# }
+test2Xyz <- read.table("test2.xyz")
+test2SubsetXyz <- test2Xyz[1,]
+for(r in 2:nrow(test2Xyz)){
+  if(r %% 3612 < 301 & r %% 3612 > 0){
+    test2SubsetXyz <- rbind(test2SubsetXyz, test2Xyz[r,])
+  }
+}
 
+# Gets adjacent rows from the XYZ table, given the dimensions of the XYZ raster
 # Shouldn't there be some better way to do this?
 getAdjs <- function(row, xLen, yLen){
   adjs <- c(nw = NA, n = NA, ne = NA,
@@ -21,22 +27,22 @@ getAdjs <- function(row, xLen, yLen){
   }else{message("Coordinate is on edge of raster")}
   if(row > xLen & row %% xLen != 1){
       adjs$nw <- adjs$n - 1
-  }else{message("Coordinate is on edge of raster")}
+  }
   if(row > xLen & row %% xLen != 0){
       adjs$ne <- adjs$n + 1
-  }else{message("Coordinate is on edge of raster")}
+  }
   if(row %% xLen != 1){
     adjs$w <- row - 1
   }else{message("Coordinate is on edge of raster")}
   if(row %% xLen != 1 & row < (xLen*(yLen-1))){
     adjs$sw <- row - 1 + xLen
-  }else{message("Coordinate is on edge of raster")}
+  }
   if(row %% xLen != 0){
     adjs$e <- row + 1
   }else{message("Coordinate is on edge of raster")}
   if(row %% xLen != 0 & row < (xLen*(yLen-1))){
     adjs$se <- row + 1 + xLen
-  }else{message("Coordinate is on edge of raster")}
+  }
   if(row < (xLen*(yLen-1))){
     adjs$s <- row + xLen
   }else{message("Coordinate is on edge of raster")}
@@ -44,6 +50,7 @@ getAdjs <- function(row, xLen, yLen){
 }
 
 calcKcals <- function(startElev, endElev, dist, weight = 67){
+  if(dist == 0){return(0)}
   grade <- (endElev - startElev)/dist
   if(grade < 0){grade <- 0}
   # Walking speed by grade equation provided by mountain tactical:
@@ -75,18 +82,31 @@ getHorCals <- function(startElev, endElev, res=30){
   return(horCals)
 }
 
-findNode <- function(xyzTab, lat, long, xLen){
+findNode <- function(xyzTab, long, lat, xLen){
   xMin <- min(xyzTab[,1])
   xMax <- max(xyzTab[,1])
   yMin <- min(xyzTab[,2])
   yMax <- max(xyzTab[,2])
   degRes <- xyzTab[2,1] - xyzTab[1,1]
   
-  if(lat > xMax | lat < xMin | long > yMax | long < yMin){stop("Coordinates are outside map extent")}
-  xJump <- round((lat - xMin)/degRes,0)
-  yJump <- round((yMax - long)/degRes,0)
+  if(long > xMax | long < xMin | lat > yMax | lat < yMin){stop("Coordinates are outside map extent")}
+  xJump <- round((long - xMin)/degRes,0)
+  yJump <- round((yMax - lat)/degRes,0)
   node <- xJump + xLen * yJump
   return(node)
+}
+
+# This heuristic is admissible because my calorie calculation treats negative grades as flat.
+# returns odd output: goes east past the destNode and then continues northwest to the destNode
+# The heuristic ignores elevation and only calculates the calories from point A to B 
+# Using a straight-line distance between A and B with zero elevation gain.
+heurCals <- function(nodeA, nodeB, fileXLen, res=30){
+  northSteps <- (nodeB - nodeA) %/% fileXLen
+  eastSteps <- (nodeB - nodeA) %% fileXLen
+  northDist <- northSteps*res
+  eastDist <- eastSteps*res
+  hDist <- (northDist^2 + eastDist^2)^(1/2)
+  return(calcKcals(0,0,hDist))
 }
 
 # This implementation of Dijkstra's algorithm has a couple of features intended to save RAM and comp time
@@ -96,11 +116,11 @@ findNode <- function(xyzTab, lat, long, xLen){
 #   instead, it stores only the previous node for each visited node, and backtracks to find the final path afterwards
 # Third, adjacent nodes are calculated using map dimensions
 #   and the consistent order of the xyz table rows (see getAdjs() above)
-dijkstra <- function(xyzFile, oriLat, oriLong, destLat, destLong, fileXLen, fileYLen, res=30){
+dijkstra <- function(xyzFile, oriLong, oriLat, destLong, destLat, fileXLen, fileYLen, res=30){
   # Part 1: set-up from original node and take first step
   xyzDf <- read.table(xyzFile)
-  oriNode <- findNode(xyzDf, oriLat, oriLong, fileXLen)
-  destNode <- findNode(xyzDf, destLat, destLong, fileXLen)
+  oriNode <- findNode(xyzDf, oriLong, oriLat, fileXLen)
+  destNode <- findNode(xyzDf, destLong, destLat, fileXLen)
   
   unvisited <- 1:nrow(xyzDf)
   dists <- rep(Inf, nrow(xyzDf))
@@ -119,6 +139,10 @@ dijkstra <- function(xyzFile, oriLat, oriLong, destLat, destLong, fileXLen, file
   diagDists <- sapply(diagAdjs, function(x) getDiagCals(xyzDf[curNode,3],xyzDf[x,3]))
   adjNodes <- c(diagAdjs, horAdjs)
   adjDists <- c(diagDists, horDists)
+  # This section is the heuristic
+  # hAdds <- adjDists + sapply(adjNodes, function(x) heurDist(x, destNode, fileXLen=fileXLen, res=res))
+  # adjDists <- adjDists + hAdds
+  # End heuristic
   dists[adjNodes] <- adjDists
   prevSteps[adjNodes] <- curNode
   
@@ -134,7 +158,7 @@ dijkstra <- function(xyzFile, oriLat, oriLong, destLat, destLong, fileXLen, file
     if(sum(!is.infinite(dists)) == 0){stop("Route blocked.")}
     if(length(visited) %% 5000 == 0){print(paste(length(visited)/length(dists)*100, "% of nodes visited"))}
     
-    adjNodes <- getAdjs(curNode, xLen = fileXLen, yLen = fileYLen)
+    adjNodes <- suppressMessages(getAdjs(curNode, xLen = fileXLen, yLen = fileYLen))
     adjNodes <- adjNodes[!is.na(adjNodes) & !adjNodes %in% visited]
     diagAdjs <- adjNodes[names(adjNodes) %in% c("nw","ne","sw","se")]
     horAdjs <- adjNodes[names(adjNodes) %in% c("n","s","e","w")]
@@ -153,6 +177,10 @@ dijkstra <- function(xyzFile, oriLat, oriLong, destLat, destLong, fileXLen, file
     if(length(diagAdjs) > 0 | length(horAdjs) > 0){
       adjNodes <- c(diagAdjs, horAdjs)
       adjDists <- c(diagDists, horDists)
+      # This section is the heuristic
+      # hAdds <- adjDists + sapply(adjNodes, function(x) heurDist(x, destNode, fileXLen=fileXLen, res=res))
+      # adjDists <- adjDists + hAdds
+      # End heuristic
       
       for(d in 1:length(adjDists)){
         if(adjDists[d] < dists[adjNodes[d]]){
@@ -162,8 +190,6 @@ dijkstra <- function(xyzFile, oriLat, oriLong, destLat, destLong, fileXLen, file
       }
     }
     
-    ### Fix me in terms of unvisited. 
-    ### I want the unvisited node with the minimum value in dists
     if(sum(dists[unvisited]==min(dists[unvisited])) > 1){
       curNode <- sample(which(1:length(dists) %in% unvisited & dists == min(dists[unvisited])), 1)
     }else{curNode <- which(1:length(dists) %in% unvisited & dists == min(dists[unvisited]))}
